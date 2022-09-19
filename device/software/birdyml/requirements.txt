@@ -1,0 +1,2 @@
+numpy==1.19.5
+tflite-runtime==2.10.0
