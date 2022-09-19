@@ -1,24 +1,17 @@
-from birdyml.capture import Capture
+import argparse
+import json
+from pathlib import Path
 
-config = {
-    'sensor_config': {
-        'pin': 4,
-        'queue_len': 5,
-        'sample_rate': 10,
-        'threshold': 0.99,
-    },
-    'camera_config': {
-        'tuning_file_path': 'imx219.json',
-        'initial_delay': 0,
-        'delay': 1,
-        'num_files': 5,
-        'show_preview': False,
-    },
-}
+from birdyml.capture import Capture
 
 
 def main():
-    # Motion detect Loop
+    parser = argparse.ArgumentParser()
+    parser.add_argument('config_file', type=Path)
+    args = parser.parse_args()
+    with open(args.config_file, 'r') as fp:
+        config = json.load(fp)
+
     capture = Capture(config)
     while True:
         save_dir = capture.capture_event()
