@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Birdy.API", "Birdy.API\Birdy.API.csproj", "{97023141-8202-460A-A921-BC0CBC5EE159}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{97023141-8202-460A-A921-BC0CBC5EE159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97023141-8202-460A-A921-BC0CBC5EE159}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97023141-8202-460A-A921-BC0CBC5EE159}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97023141-8202-460A-A921-BC0CBC5EE159}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EB9509BB-70F3-4C8E-B233-629097BD8E81}
+	EndGlobalSection
+EndGlobal
