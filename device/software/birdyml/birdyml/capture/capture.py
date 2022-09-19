@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import tempfile
 from datetime import datetime
 from pathlib import Path
@@ -6,22 +5,6 @@ from time import sleep
 
 from gpiozero import MotionSensor
 from picamera2 import Picamera2
-
-config = {
-    'sensor_config': {
-        'pin': 4,
-        'queue_len': 5,
-        'sample_rate': 10,
-        'threshold': 0.99,
-    },
-    'camera_config': {
-        'tuning_file_path': 'imx219.json',
-        'initial_delay': 0,
-        'delay': 1,
-        'num_files': 5,
-        'show_preview': False,
-    },
-}
 
 
 class Camera:
@@ -67,14 +50,3 @@ class Capture:
             self.pir.wait_for_inactive()
             sleep(2)
         return save_dir
-
-
-def main():
-    # Motion detect Loop
-    capture = Capture(config)
-    while True:
-        save_dir = capture.capture_event()
-
-
-if __name__ == "__main__":
-    main()
