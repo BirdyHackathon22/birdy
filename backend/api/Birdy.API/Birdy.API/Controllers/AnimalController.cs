@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Birdy.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class AnimalController : ControllerBase
@@ -21,7 +21,7 @@ namespace Birdy.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
+        [HttpGet(Name = "GetAnimal")]
         public IEnumerable<Animal> Get()
         {
             return Enumerable.Range(1, 7).Select(index => new Animal(CommonBirds[Random.Shared.Next(CommonBirds.Length)],
