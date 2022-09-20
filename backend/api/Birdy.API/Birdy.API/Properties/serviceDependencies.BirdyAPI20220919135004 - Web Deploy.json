@@ -6,6 +6,13 @@
       "type": "cosmosdb.azure",
       "connectionId": "ConnectionStrings",
       "dynamicId": null
+    },
+    "storage1": {
+      "secretStore": null,
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/birdystorage",
+      "type": "storage.azure",
+      "connectionId": "BlobStorage",
+      "dynamicId": null
     }
   }
 }

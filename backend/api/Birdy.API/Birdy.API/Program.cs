@@ -1,7 +1,6 @@
 using Birdy.API.Services;
 using Birdy.API.Services.Interfaces;
-using Microsoft.AspNetCore.Authentication.Negotiate;
-using System.Configuration;
+using Microsoft.Azure.Cosmos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +12,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(builder.Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+
+var blobStorageConnectionKey = builder.Configuration.GetValue<string>("BlobStorage:ConnectionKey");
+var storageContainerName = builder.Configuration.GetValue<string>("BlobStorage:ContainerName");
+
+builder.Services.AddScoped<IAzureBlobStorageService>(f => new AzureBlobStorageService(blobStorageConnectionKey, storageContainerName));
 
 //builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
 //   .AddNegotiate();
@@ -51,10 +55,10 @@ static async Task<CosmosDbService> InitializeCosmosClientInstanceAsync(IConfigur
     string containerName = configurationSection.GetSection("ContainerName").Value;
     string account = configurationSection.GetSection("Account").Value;
     string key = configurationSection.GetSection("Key").Value;
-    Microsoft.Azure.Cosmos.CosmosClient client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
+    var client = new CosmosClient(account, key);
     CosmosDbService cosmosDbService = new CosmosDbService(client, databaseName, containerName);
-    Microsoft.Azure.Cosmos.DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
-    Microsoft.Azure.Cosmos.ContainerResponse container = await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+    DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
+    await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
 
     //Setup some data
     await cosmosDbService.SetupBirdyWatch();
