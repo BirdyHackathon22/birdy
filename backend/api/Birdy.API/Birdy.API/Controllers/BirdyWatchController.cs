@@ -1,4 +1,5 @@
 using Birdy.API.Models;
+using Birdy.API.Models.Request;
 using Birdy.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,29 @@ namespace Birdy.API.Controllers
         [HttpGet(Name = "GetBirdyWatch")]
         public async Task<IEnumerable<BirdyWatch>> Get()
         {
-            return await cosmosDbService.GetAnimalsAsync();
+            return await cosmosDbService.GetBirdyWatchesAsync();
+        }
+
+        [HttpPost(Name = "CreateBirdyWatch")]
+        public async Task<StatusCodeResult> Post(BirdyRequest request)
+        {
+            var birdyWatch = MapBirdyWatch(request);
+
+            await cosmosDbService.CreateBirdyWatch(birdyWatch);
+
+            return Ok();
+        }
+
+        private static BirdyWatch MapBirdyWatch(BirdyRequest request)
+        {
+            return new BirdyWatch(request.Label, new Location(long.Parse(request.Latitude), long.Parse(request.Longitude)))
+            {
+                ImageName = request.Path,
+                Score = request.Score,
+                BoundingBox = request.Box,
+                DateSpotted = DateTime.Parse(request.Time),
+                Device = request.Device
+            };
         }
     }
 }

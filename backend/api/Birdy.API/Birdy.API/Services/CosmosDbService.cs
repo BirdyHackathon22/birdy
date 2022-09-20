@@ -18,17 +18,21 @@ namespace Birdy.API.Services
 
         public async Task SetupBirdyWatch()
         {
-            var toWrite = Enumerable.Range(1, 10).Select(index => 
-                this._container.CreateItemAsync(
-                    new BirdyWatch(BirdSpecies.CommonBirds[Random.Shared.Next(BirdSpecies.CommonBirds.Length)],
-                        new Location(Random.Shared.NextInt64(29, 49), Random.Shared.NextInt64(-124, -73))) 
-                        { 
-                            LastWatchDate = GetRandomDate(), 
-                            Id = Guid.NewGuid().ToString() 
-                        }
-                    )
-            );
+            var toWrite = Enumerable.Range(1, 10).Select(index => this._container.CreateItemAsync(CreateRandomBirdyWatch()));
             await Task.WhenAll(toWrite);
+        }
+
+        private static BirdyWatch CreateRandomBirdyWatch()
+        {
+            var species = BirdSpecies.CommonBirds[Random.Shared.Next(BirdSpecies.CommonBirds.Length)];
+            return new BirdyWatch(species, new Location(Random.Shared.NextInt64(29, 49), Random.Shared.NextInt64(-124, -73)))
+            {
+                DateSpotted = GetRandomDate(),
+                ImageName = species,
+                Score = Random.Shared.Next(0, 100),
+                BoundingBox = "BoundingBox",
+                Device = "FakeDevice"
+            };
         }
 
         private static DateTime GetRandomDate()
@@ -38,7 +42,7 @@ namespace Birdy.API.Services
 
         #endregion
 
-        public async Task<IEnumerable<BirdyWatch>> GetAnimalsAsync()
+        public async Task<IEnumerable<BirdyWatch>> GetBirdyWatchesAsync()
         {
             var result = new List<BirdyWatch>();
 
@@ -57,6 +61,11 @@ namespace Birdy.API.Services
             }
 
             return result;
+        }
+
+        public async Task CreateBirdyWatch(BirdyWatch birdyWatch)
+        {
+            await this._container.CreateItemAsync(birdyWatch);
         }
     }
 }

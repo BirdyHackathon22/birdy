@@ -6,7 +6,7 @@ namespace Birdy.API.Models
     public class BirdyWatch
     {
         [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; } = string.Empty;
+        public string Id { get; set; }
 
         [JsonProperty(PropertyName = "type")]
         public AnimalType AnimalType => AnimalType.Bird;
@@ -17,8 +17,8 @@ namespace Birdy.API.Models
         [JsonProperty(PropertyName = "species")]
         public string Species { get; set; }
 
-        [JsonProperty(PropertyName = "last_watch_date")]
-        public DateTime LastWatchDate { get; set; }
+        [JsonProperty(PropertyName = "date_spotted")]
+        public DateTime DateSpotted { get; set; }
 
         [JsonProperty(PropertyName = "location")]
         public Location Location { get; set; }
@@ -26,11 +26,20 @@ namespace Birdy.API.Models
         [JsonProperty(PropertyName = "image_name")]
         public string ImageName { get; set; } = "no_image";
 
+        [JsonProperty(PropertyName = "score")]
+        public int Score { get; set; }
+
+        [JsonProperty(PropertyName = "bounding_box")]
+        public string BoundingBox { get; set; }
+
+        [JsonProperty(PropertyName = "device")]
+        public string Device { get; set; }
+
         public BirdyWatch(string species, Location location)
         {
+            Id = Guid.NewGuid().ToString();
             Species = species;
             Location = location;
-            ImageName = species;
         }
     }
 

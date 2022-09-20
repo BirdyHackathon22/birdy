@@ -4,6 +4,7 @@ namespace Birdy.API.Services.Interfaces
 {
     public interface ICosmosDbService
     {
-        Task<IEnumerable<BirdyWatch>> GetAnimalsAsync();
+        Task CreateBirdyWatch(BirdyWatch birdyWatch);
+        Task<IEnumerable<BirdyWatch>> GetBirdyWatchesAsync();
     }
 }
