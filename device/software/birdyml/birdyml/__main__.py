@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 from birdyml.capture import Capture
+from birdyml.classifier import BirdDetector
 
 
 def main():
@@ -13,8 +14,13 @@ def main():
         config = json.load(fp)
 
     capture = Capture(config)
+    detector = BirdDetector(config)
+
     while True:
         save_dir = capture.capture_event()
+        images = Path(save_dir.name).iterdir()
+        bird = detector.predict(images)
+        print(bird)
 
 
 main()

@@ -11,5 +11,15 @@
         "delay": 1,
         "num_files": 5,
         "show_preview": false
+    },
+    "detector_config": {
+        "modelLabels" :  "/home/marc/birdy/device/software/birdyml/birdyml/classifier/birdy_efficientdet_lite2_index.txt",
+        "modelTensorflow" : "/home/marc/birdy/device/software/birdyml/birdyml/classifier/birdy_efficientdet_lite2.tflite",
+        "probabilityThreshold" : 0.7
+    },
+    "classifier_config": {
+        "modelLabels" :  "/home/marc/birdy/device/software/birdyml/birdyml/classifier/birdy_aiyvision_index.txt",
+        "modelTensorflow" : "/home/marc/birdy/device/software/birdyml/birdyml/classifier/birdy_aiyvision.tflite",
+        "probabilityThreshold" : 0.6
     }
 }

@@ -11,9 +11,10 @@ from unittest import result
 import numpy as np
 from PIL import Image, ImageDraw
 from tflite_runtime.interpreter import Interpreter
-from bird import Bird
 from datetime import datetime
 import json
+
+from .bird import Bird
 
 class BirdDetector:
 
