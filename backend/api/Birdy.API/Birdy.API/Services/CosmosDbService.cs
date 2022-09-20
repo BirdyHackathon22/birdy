@@ -16,17 +16,16 @@ namespace Birdy.API.Services
 
         #region Setup
 
-        private static readonly string[] CommonBirds = new[]
-        {
-            "Mourning Dove", "Northern Cardinal", "American Robin", "American Crow", "Blue Jay", "Song Sparrow", "Red-winged Blackbird", "European Starling", "American Goldfinch", "Canada Goose"
-        };
-
         public async Task SetupBirdyWatch()
         {
             var toWrite = Enumerable.Range(1, 10).Select(index => 
                 this._container.CreateItemAsync(
-                    new BirdyWatch(CommonBirds[Random.Shared.Next(CommonBirds.Length)],
-                        new Location(Random.Shared.NextInt64(29, 49), Random.Shared.NextInt64(-124, -73))) { LastWatchDate = GetRandomDate(), Id = Guid.NewGuid().ToString() }
+                    new BirdyWatch(BirdSpecies.CommonBirds[Random.Shared.Next(BirdSpecies.CommonBirds.Length)],
+                        new Location(Random.Shared.NextInt64(29, 49), Random.Shared.NextInt64(-124, -73))) 
+                        { 
+                            LastWatchDate = GetRandomDate(), 
+                            Id = Guid.NewGuid().ToString() 
+                        }
                     )
             );
             await Task.WhenAll(toWrite);

@@ -4,7 +4,7 @@ namespace Birdy.API.Controllers
 {
     [ApiController]
     [Route("")]
-    public class IndexController : Controller
+    public class IndexController : ControllerBase
     {
         private readonly ILogger<IndexController> _logger;
 
