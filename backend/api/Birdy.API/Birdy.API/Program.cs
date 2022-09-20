@@ -57,7 +57,7 @@ static async Task<CosmosDbService> InitializeCosmosClientInstanceAsync(IConfigur
     Microsoft.Azure.Cosmos.ContainerResponse container = await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
 
     //Setup some data
-    await cosmosDbService.SetupAnimal();
+    await cosmosDbService.SetupBirdyWatch();
 
     return cosmosDbService;
 }

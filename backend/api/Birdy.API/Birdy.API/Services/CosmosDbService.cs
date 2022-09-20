@@ -21,7 +21,7 @@ namespace Birdy.API.Services
             "Mourning Dove", "Northern Cardinal", "American Robin", "American Crow", "Blue Jay", "Song Sparrow", "Red-winged Blackbird", "European Starling", "American Goldfinch", "Canada Goose"
         };
 
-        public async Task SetupAnimal()
+        public async Task SetupBirdyWatch()
         {
             var toWrite = Enumerable.Range(1, 10).Select(index => 
                 this._container.CreateItemAsync(
