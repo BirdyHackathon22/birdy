@@ -2,7 +2,7 @@ from bird_detector import BirdDetector
 import os
 import sys
 
-listOfPaths = ["test/house_sparrow_2.jpg", "test/house_sparrow_3.jpg", "test/house_sparrow_4.jpg"]
+listOfPaths = ["test/bird.jpg"]
 
 config = {
     "detector_config": {
@@ -19,8 +19,3 @@ config = {
 
 bird_dc = BirdDetector(config)
 print(bird_dc.predict(listOfPaths))
-
-# cut the image according to min max coordinates
-# what is the minimum square from the two points to that specific square
-# adapting to the smallest size and centered in the middle
-# create a square for the image

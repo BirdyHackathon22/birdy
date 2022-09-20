@@ -9,7 +9,7 @@ from inspect import classify_class_attrs
 from types import ClassMethodDescriptorType
 from unittest import result
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 from tflite_runtime.interpreter import Interpreter
 from bird import Bird
 from datetime import datetime
@@ -77,12 +77,10 @@ class Detector:
             draw = ImageDraw.Draw(im)
 
         for score, box, objDetected in results:
-
             if score < self.probabilityThreshold:
                 continue
 
             # filter the list to have birds, and choose the bird with the highest score
-
             min_y = round(box[0] * image_height)
             min_x = round(box[1] * image_width)
             max_y = round(box[2] * image_height)
@@ -94,8 +92,10 @@ class Detector:
                 self.label = self.labels[int(objDetected)]
                 self.box = [[min_x, min_y], [max_x, max_y]]
 
-            print (f"{self.labels[int(objDetected)]}: {score*100:.2f}% - {min_x}:{min_y} - {max_x}:{max_y}")
-            draw.rectangle([min_x,min_y,max_x,max_y], None, 128, 2)
+            print(f"{self.labels[int(objDetected)]} detected with percentage : {score*100:.2f}% - box size : {min_x}:{min_y} - {max_x}:{max_y}")
+            draw.rectangle([min_x,min_y,max_x,max_y], None, 128, 5)
+            path_parts = path.split('.')
+            im.save(path_parts[0] + '_box.' + path_parts[1])
 
 class Classifier():
     def __init__(self, config):
@@ -114,31 +114,36 @@ class Classifier():
 
     def identifyBird(self, path, box) -> Bird :
         """ is there a bird at the feeder? """
+        path_parts = path.split('.')
+        path_with_box = path_parts[0] + '_box.' + path_parts[1]
+        image_box = Image.open(path_with_box)
+
         image = Image.open(path)
-        # need to resize the image here so it becomes a square image as big as possible inside of the square defined by the two boxes
-        max_length = max(box[1][0] - box[0][0], box[1][1] - box[0][1])/2
+        max_length = max(box[1][0] - box[0][0], box[1][1] - box[0][1])/2 + 100
         center = ((box[1][0] + box[0][0])/2, (box[1][1] + box[0][1])/2)
-        print('center :', center)
-        print('max_length :', max_length)
-        # consider edge cases when it could actually crash
-        image.show()
         image = image.crop((center[0] - max_length, center[1] - max_length, center[0] + max_length, center[1] + max_length))
-        image.show()
+        image.save(path_parts[0] + '_cropped.' + path_parts[1])
 
         resizedImage=image.resize((224,224))
         results = self.classifyImage(resizedImage)
         label_id, prob = results[0]
-        print("bird: " + self.labels[label_id])
-        print("prob: " + str(prob))
-        
+        print('Label of the bird : ', self.labels[label_id])
+        print('Accuracy of prediction : ', prob)
+
         if prob > self.probabilityThreshold:
             bird = self.labels[label_id]
             bird = bird[bird.find(",") + 1:]
             prob_pct = str(round(prob * 100, 1)) + "%"
+            draw = ImageDraw.Draw(image_box)
+            font = ImageFont.truetype('arial.ttf', 50)
+            text = bird + ' - ' + str(prob*100) + '%'
+            bbox = draw.textbbox((center[0] - max_length, center[1] - max_length), text, font=font)
+            draw.rectangle(bbox, fill="white")
+            draw.text((center[0] - max_length, center[1] - max_length), text, font = font, fill =(255, 0, 0))
+            image_box.save(path_parts[0] + '_res.' + path_parts[1])
             return Bird(bird, prob*100, path, box, None, None, None)
-            print(bird, prob_pct)
         else:
-            return None
+           return None
 
     def classifyImage(self, image, top_k=1):
         self.set_input_tensor(image)
