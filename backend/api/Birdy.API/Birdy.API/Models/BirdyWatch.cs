@@ -69,16 +69,16 @@ namespace Birdy.API.Models
 
     public class SpeciesVote
     {
-        [JsonProperty(PropertyName = "correct")]
-        public int Correct { get; set; }
+        [JsonProperty(PropertyName = "true_classification")]
+        public int TrueClassification { get; set; }
 
-        [JsonProperty(PropertyName = "incorrect")]
-        public int Incorrect { get; set; }
+        [JsonProperty(PropertyName = "false_classification")]
+        public int FalseClassification { get; set; }
 
         public SpeciesVote()
         {
-            Correct = 0;
-            Incorrect = 0;
+            TrueClassification = 0;
+            FalseClassification = 0;
         }
     }
 }

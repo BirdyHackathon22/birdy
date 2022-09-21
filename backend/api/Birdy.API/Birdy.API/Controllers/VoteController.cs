@@ -19,22 +19,22 @@ namespace Birdy.API.Controllers
             this.cosmosDbService = cosmosDbService;
         }
 
-        // [HttpPut("{id}/correct", Name = "VoteBirdyCorrect")]
-        // public async Task<StatusCodeResult> PostCorrect(string id)
-        // {
+        [HttpPut("{id}/true", Name = "VoteBirdyTrue")]
+        public async Task<StatusCodeResult> PostTrue(string id)
+        {
 
-        //     await cosmosDbService.VoteBirdy(id, true);
+            await cosmosDbService.PutVote(id, true);
 
-        //     return Ok();
-        // }
+            return Ok();
+        }
 
-        // [HttpPut("{id}/incorrect", Name = "VoteBirdyCorrect")]
-        // public async Task<StatusCodeResult> PostIncorrect(string id)
-        // {
+        [HttpPut("{id}/false", Name = "VoteBirdyFalse")]
+        public async Task<StatusCodeResult> PostFalse(string id)
+        {
 
-        //     await cosmosDbService.VoteBirdy(id, false);
+            await cosmosDbService.PutVote(id, false);
 
-        //     return Ok();
-        // }
+            return Ok();
+        }
     }
 }

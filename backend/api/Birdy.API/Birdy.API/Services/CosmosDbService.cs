@@ -104,15 +104,16 @@ namespace Birdy.API.Services
             return result;
         }
 
-        //         public async Task<IEnumerable<BirdyWatch>> PutVote(string id, bool isCorrect)
-        //         {
-        //             await ItemResponse < Product > response = await container.PatchItemAsync<Product>(
-        //                     id: id,
-        //                     partitionKey: new PartitionKey("road-bikes"),
-        //                     patchOperations: new[] {
-        //                     PatchOperation.Replace("/price", 355.45)
-        //     }
-        // );
-        //         }
+        public async Task<ItemResponse<BirdyWatch>> PutVote(string id, bool isCorrect)
+        {
+            string vote = isCorrect ? "true_classification" : "false_classification";
+            ItemResponse<BirdyWatch> response = await this._container.PatchItemAsync<BirdyWatch>(
+                    id: id,
+                    partitionKey: new PartitionKey(id),
+                    patchOperations: new[] {
+                            PatchOperation.Increment("/speciesvote/"+vote, 1) });
+
+            return response;
+        }
     }
 }
