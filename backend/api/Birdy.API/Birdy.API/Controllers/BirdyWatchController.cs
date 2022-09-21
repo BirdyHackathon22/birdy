@@ -25,6 +25,12 @@ namespace Birdy.API.Controllers
             return await cosmosDbService.GetBirdyWatchesAsync();
         }
 
+        [HttpGet("filter", Name = "GetBirdyWatchFilter")]
+        public async Task<IEnumerable<BirdyWatch>> GetByFilter([FromQuery] QueryRequest query)
+        {
+            return await cosmosDbService.GetBirdyWatchesFilterAsync(query);
+        }
+
         [HttpPost(Name = "CreateBirdyWatch")]
         public async Task<StatusCodeResult> Post(BirdyRequest request)
         {
@@ -37,7 +43,7 @@ namespace Birdy.API.Controllers
 
         private static BirdyWatch MapBirdyWatch(BirdyRequest request)
         {
-            return new BirdyWatch(request.Label, new Location(long.Parse(request.Latitude), long.Parse(request.Longitude)))
+            return new BirdyWatch(request.Label, new Location(double.Parse(request.Latitude), double.Parse(request.Longitude)))
             {
                 ImageName = request.Path,
                 Score = request.Score,
@@ -47,4 +53,6 @@ namespace Birdy.API.Controllers
             };
         }
     }
+
+
 }

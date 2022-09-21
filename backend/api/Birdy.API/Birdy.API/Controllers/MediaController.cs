@@ -26,7 +26,7 @@ namespace Birdy.API.Controllers
             var (fileData, mimeType) = await azureBlobStorageService.Retrieve(filename);
 
             if (fileData != null)
-                return File(fileData, mimeType);
+                return File(fileData, "image/jpeg");
 
             byte[] fileContents = null;
 
