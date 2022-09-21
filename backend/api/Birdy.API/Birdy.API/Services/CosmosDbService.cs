@@ -15,34 +15,6 @@ namespace Birdy.API.Services
             this._container = dbClient.GetContainer(databaseName, containerName);
         }
 
-        #region Setup
-
-        public async Task SetupBirdyWatch()
-        {
-            var toWrite = Enumerable.Range(1, 10).Select(index => this._container.CreateItemAsync(CreateRandomBirdyWatch()));
-            await Task.WhenAll(toWrite);
-        }
-
-        private static BirdyWatch CreateRandomBirdyWatch()
-        {
-            var species = BirdSpecies.CommonBirds[Random.Shared.Next(BirdSpecies.CommonBirds.Length)];
-            return new BirdyWatch(species, new Location(Random.Shared.NextInt64(29, 49), Random.Shared.NextInt64(-124, -73)))
-            {
-                DateSpotted = GetRandomDate(),
-                ImageName = species,
-                Score = Random.Shared.Next(0, 100),
-                BoundingBox = "BoundingBox",
-                Device = "FakeDevice"
-            };
-        }
-
-        private static DateTime GetRandomDate()
-        {
-            return DateTime.Now.AddDays(Random.Shared.Next(-20, 0)).AddHours(Random.Shared.Next(0, 10)).AddMinutes(Random.Shared.Next(0, 10)).AddSeconds(Random.Shared.Next(0, 10));
-        }
-
-        #endregion
-
         public async Task<IEnumerable<BirdyWatch>> GetBirdyWatchesAsync()
         {
             var result = new List<BirdyWatch>();
