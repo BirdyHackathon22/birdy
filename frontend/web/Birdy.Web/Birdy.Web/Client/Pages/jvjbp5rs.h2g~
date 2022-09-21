@@ -25,10 +25,10 @@ else
                     </th>
                 </tr>
                 <tr>
-                    <td>Location: @birdyWatch.Location.Latitute.ToString("N2"), @birdyWatch.Location.Longitude.ToString("N2")</td>
+                    <td>location: @birdyWatch.Location.Latitute.ToString("N2"), @birdyWatch.Location.Longitude.ToString("N2")</td>
                 </tr>
                 <tr>
-                    <td>Date: @birdyWatch.DateSpotted.ToString("M/d/yyyy, hh:mm:ss")</td>
+                    <td>@birdyWatch.DateSpotted.ToString("M/d/yyyy, hh:mm:ss")</td>
                 </tr>
             }
         </tbody>

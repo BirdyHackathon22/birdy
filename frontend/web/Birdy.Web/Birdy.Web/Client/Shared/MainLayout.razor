@@ -1,6 +1,32 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
+<div>
+    <NavMenu />
+
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-one-fifth">
+                    <p class="subtitle">Welcome to Birdy!</p>
+                    <img src="https://github.com/francesco-sodano/birdy/raw/main/res/images/misc/birdy-device-promopicture1.jpg" alt="your birdy" />
+                    <div class="left-nav-btn-container">
+                        <a class="button">
+                            Set up your own Birdy!
+                        </a>
+                        <a class="button">
+                            Contact Us
+                        </a>
+                    </div>
+                </div>
+                <div class="column">
+                    @Body
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@*<div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
@@ -14,4 +40,4 @@
             @Body
         </article>
     </main>
-</div>
+</div>*@
