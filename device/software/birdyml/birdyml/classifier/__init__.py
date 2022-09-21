@@ -1,1 +1,1 @@
-from birdyml.classifier.bird_detector import BirdDetector
+from birdyml.classifier.bird_detector import BirdDetector, NotBirdError

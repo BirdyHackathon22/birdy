@@ -1,20 +1,44 @@
-#!/usr/bin/env python3
-# Bird Species Classifier Tester Tool - v20220902.1
-# Copyright 2022 - Francesco Ares Sodano
+from dataclasses import dataclass
 
-import os
-import sys
-from curses.textpad import rectangle
-from inspect import classify_class_attrs
-from types import ClassMethodDescriptorType
-from unittest import result
 import numpy as np
 from PIL import Image, ImageDraw
 from tflite_runtime.interpreter import Interpreter
-from datetime import datetime
-import json
 
-from .bird import Bird
+
+class NotBirdError(Exception):
+    pass
+
+
+@dataclass
+class Point:
+    x: float
+    y: float
+
+    def __str__(self):
+        return f"[{self.x}, {self.y}]"
+
+
+@dataclass
+class Box:
+    min_point: Point
+    max_point: Point
+
+    @classmethod
+    def from_list(cls, box_list):
+        return cls(*box_list)
+
+    def __str__(self):
+        return f"[{self.min_point}, {self.max_point}]"
+
+
+@dataclass
+class Bird:
+    label: str
+    score_label: float
+    score: float
+    path: str
+    box: Box
+
 
 class BirdDetector:
 
@@ -23,10 +47,22 @@ class BirdDetector:
         self.classifier = Classifier(config["classifier_config"])
 
     def predict(self, listOfImages):
-        if self.detector.isBird(listOfImages):
-            return self.classifier.identifyBird(self.detector.path, self.detector.box)
-        else:
-            return None
+        detector_result = self.detector.isBird(listOfImages)
+        if not detector_result['is_bird']:
+            raise NotBirdError('No bird found')
+
+        classifier_result = self.classifier.identifyBird(
+            detector_result['path'],
+            detector_result['box'],
+        )
+        return Bird(
+            classifier_result['label'],
+            classifier_result['score'],
+            detector_result['score'],
+            detector_result['path'],
+            Box.from_list(detector_result['box']),
+        )
+
 
 class Detector:
     def __init__(self, config):
@@ -51,14 +87,16 @@ class Detector:
         self.box = None
 
         for path in listOfPaths:
-            self.runDetection(path)  
-        
-        if self.score >= self.probabilityThreshold:
-            return True
-        else:
-            return False
+            self.runDetection(path)
 
-    def runDetection(self,path): 
+        return {
+            "is_bird": self.score >= self.probabilityThreshold,
+            "box": self.box,
+            "path": self.path,
+            "score": self.score,
+        }
+
+    def runDetection(self,path):
         # TensorFlow Model works with 448x448 image size, resizing the original image to match.
         image = Image.open(path)
         image_height, image_width = image.size[:2]
@@ -102,7 +140,6 @@ class Classifier():
     def __init__(self, config):
 
         self.modelLabels = config["modelLabels"]
-        self.probabilityThreshold = config["probabilityThreshold"]
         self.labels = self.loadModellabels()
         self.interpreter = Interpreter(config["modelTensorflow"])
         self.interpreter.allocate_tensors()
@@ -131,15 +168,16 @@ class Classifier():
         label_id, prob = results[0]
         print("bird: " + self.labels[label_id])
         print("prob: " + str(prob))
-        
-        if prob > self.probabilityThreshold:
-            bird = self.labels[label_id]
-            bird = bird[bird.find(",") + 1:]
-            prob_pct = str(round(prob * 100, 1)) + "%"
-            return Bird(bird, prob*100, path, box, None, None, None)
-            print(bird, prob_pct)
-        else:
-            return None
+
+        bird = self.labels[label_id]
+        bird = bird[bird.find(",") + 1:]
+        prob_pct = str(round(prob * 100, 1)) + "%"
+        return {
+            "label": bird,
+            "score": prob*100,
+            "path": path,
+            "box": box
+        }
 
     def classifyImage(self, image, top_k=1):
         self.set_input_tensor(image)
