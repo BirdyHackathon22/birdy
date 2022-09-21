@@ -1,0 +1,45 @@
+﻿@page "/"
+@using Birdy.Web.Shared
+@inject HttpClient Http
+
+<PageTitle>Birdy Watches</PageTitle>
+
+<h1 class="title">Birdy Watches</h1>
+
+@if (birdyWatches == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table is-fullwidth">
+        <tbody>
+            @foreach (var birdyWatch in birdyWatches)
+            {
+                <tr>
+                    <td rowSpan="3">
+                        <img width="350" alt="bird" src="@birdyWatch.ImageUrl" />
+                    </td>
+                    <th>
+                        @birdyWatch.Species (@birdyWatch.Score.ToString("N2") %)
+                    </th>
+                </tr>
+                <tr>
+                    <td>location: @birdyWatch.Location.Latitute.ToString("N2"), @birdyWatch.Location.Longitude.ToString("N2")</td>
+                </tr>
+                <tr>
+                    <td>@birdyWatch.DateSpotted.ToString("M/d/yyyy, hh:mm:ss")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private BirdyWatch[]? birdyWatches;
+
+    protected override async Task OnInitializedAsync()
+    {
+        birdyWatches = await Http.GetFromJsonAsync<BirdyWatch[]>("BirdyWatch");
+    }
+}

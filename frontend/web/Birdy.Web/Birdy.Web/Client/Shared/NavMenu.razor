@@ -1,0 +1,62 @@
+﻿<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+            <img src="img/birdy-logo.jpg" height="55" />
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+
+            <a class="navbar-item">
+                <form>
+                    <input type="text" class="input" placeholder="Search..." />
+                </form>
+            </a>
+
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <span class="icon is-large fa-2x">
+                    <i class="fa-solid fa-earth-africa"></i>
+                </span>
+                <span class="icon is-large fa-2x">
+                    <i class="fa-solid fa-house"></i>
+                </span>
+                <span class="icon is-large fa-2x">
+                    <i class="fa-solid fa-heart"></i>
+                </span>
+                <span class="icon is-large">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa-regular fa-user fa-stack-1x"></i>
+                        <i class="fa-regular fa-circle fa-stack-2x"></i>
+                    </span>
+                </span>
+            </div>
+            <div class="navbar-item">
+                <ul>
+                    <li>User XYZ1</li>
+                    <li>999 999</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
