@@ -16,7 +16,7 @@ namespace Birdy.Web.Shared
 
         public string ImageUrl { get; set; } = string.Empty;
 
-        public int Score { get; set; }
+        public float Score { get; set; }
 
         public string BoundingBox { get; set; } = string.Empty;
 
@@ -25,8 +25,8 @@ namespace Birdy.Web.Shared
 
     public class Location
     {
-        public long Latitute { get; set; }
+        public double Latitute { get; set; }
 
-        public long Longitude { get; set; }
+        public double Longitude { get; set; }
     }
 }
