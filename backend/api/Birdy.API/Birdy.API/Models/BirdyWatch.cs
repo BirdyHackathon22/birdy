@@ -49,12 +49,12 @@ namespace Birdy.API.Models
     public class Location
     {
         [JsonProperty(PropertyName = "latitute")]
-        public long Latitute { get; }
+        public double Latitute { get; }
 
         [JsonProperty(PropertyName = "longitude")]
-        public long Longitude { get; }
+        public double Longitude { get; }
 
-        public Location(long latitute, long longitude)
+        public Location(double latitute, double longitude)
         {
             Latitute = latitute;
             Longitude = longitude;
