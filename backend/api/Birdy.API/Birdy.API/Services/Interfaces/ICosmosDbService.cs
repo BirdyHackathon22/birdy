@@ -6,5 +6,6 @@ namespace Birdy.API.Services.Interfaces
     {
         Task CreateBirdyWatch(BirdyWatch birdyWatch);
         Task<IEnumerable<BirdyWatch>> GetBirdyWatchesAsync();
+        Task<IEnumerable<BirdyWatch>> GetBirdyWatchesFilterAsync(string species, int score);
     }
 }

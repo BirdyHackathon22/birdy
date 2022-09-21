@@ -67,5 +67,31 @@ namespace Birdy.API.Services
         {
             await this._container.CreateItemAsync(birdyWatch);
         }
+
+        public async Task<IEnumerable<BirdyWatch>> GetBirdyWatchesFilterAsync(string species, int score)
+        {
+            var result = new List<BirdyWatch>();
+
+
+            QueryDefinition query = new QueryDefinition("select * from c where c.species = @key1 and c.score = @key2")
+                .WithParameter("@key1", species)
+                .WithParameter("@key2", score);
+
+            var iterator = this._container.GetItemQueryIterator<BirdyWatch>(query);
+
+            while (iterator.HasMoreResults)
+            {
+                var feedResponse = await iterator.ReadNextAsync();
+                foreach (var animal in feedResponse)
+                {
+                    if (animal is null)
+                        continue;
+
+                    result.Add(animal);
+                }
+            }
+
+            return result;
+        }
     }
 }
