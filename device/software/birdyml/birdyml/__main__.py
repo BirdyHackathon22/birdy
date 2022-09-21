@@ -3,7 +3,8 @@ import json
 from pathlib import Path
 
 from birdyml.capture import Capture
-from birdyml.classifier import BirdDetector
+from birdyml.classifier import BirdDetector, NotBirdError
+from birdyml.sender import Sender
 
 
 def main():
@@ -15,12 +16,21 @@ def main():
 
     capture = Capture(config)
     detector = BirdDetector(config)
+    sender = Sender(config)
 
     while True:
         save_dir = capture.capture_event()
         images = Path(save_dir.name).iterdir()
-        bird = detector.predict(images)
-        print(bird)
+        try:
+            bird = detector.predict(images)
+        except NotBirdError:
+            print('No bird found in images')
+            continue
+
+        try:
+            sender.push_bird(bird)
+        except RuntimeError:
+            print('Pushing to the API failed...')
 
 
 main()

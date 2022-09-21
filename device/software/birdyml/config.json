@@ -19,7 +19,9 @@
     },
     "classifier_config": {
         "modelLabels" :  "/home/marc/birdy/device/software/birdyml/birdyml/classifier/birdy_aiyvision_index.txt",
-        "modelTensorflow" : "/home/marc/birdy/device/software/birdyml/birdyml/classifier/birdy_aiyvision.tflite",
-        "probabilityThreshold" : 0.6
+        "modelTensorflow" : "/home/marc/birdy/device/software/birdyml/birdyml/classifier/birdy_aiyvision.tflite"
+    },
+    "api_config": {
+        "base_url": "https://birdyapi20220919135004.azurewebsites.net"
     }
 }
