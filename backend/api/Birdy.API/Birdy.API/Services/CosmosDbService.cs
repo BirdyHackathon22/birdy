@@ -1,4 +1,5 @@
-﻿using Birdy.API.Models;
+﻿using System.Text;
+using Birdy.API.Models;
 using Birdy.API.Models.Request;
 using Birdy.API.Services.Interfaces;
 using Microsoft.Azure.Cosmos;
@@ -45,10 +46,39 @@ namespace Birdy.API.Services
         {
             var result = new List<BirdyWatch>();
 
+            string queryString = "SELECT * FROM c where 1=1 ";
 
-            QueryDefinition queryDefinition = new QueryDefinition("select * from c where c.species = @key1 and c.score = @key2")
-                .WithParameter("@key1", query.Species[0])
-                .WithParameter("@key2", query.ScoreRange.Min);
+            if (query.Species is not null)
+            {
+                // Is this dangerous as its direct injection?
+                string speciesString = "('" + string.Join("','", query.Species) + "')";
+                queryString += "and c.species in " + speciesString;
+            }
+
+            if (query.ScoreRange is not null && query.ScoreRange.Min > 0)
+            {
+                queryString += " and c.score > @scoreMin";
+            }
+            if (query.ScoreRange is not null && query.ScoreRange.Max > query.ScoreRange.Min)
+            {
+                queryString += " and c.score < @scoreMax";
+            }
+
+            QueryDefinition queryDefinition = new QueryDefinition(queryString);
+
+            if (query.ScoreRange is not null && query.ScoreRange.Min is not -1)
+            {
+                queryDefinition.WithParameter("@scoreMin", query.ScoreRange.Min);
+
+            }
+
+            if (query.ScoreRange is not null && query.ScoreRange.Max is not -1)
+            {
+                queryDefinition.WithParameter("@scoreMax", query.ScoreRange.Max);
+            }
+
+
+
 
             var iterator = this._container.GetItemQueryIterator<BirdyWatch>(queryDefinition);
 
@@ -59,6 +89,13 @@ namespace Birdy.API.Services
                 {
                     if (animal is null)
                         continue;
+
+                    if (query.DateRange is not null && query.DateRange.Min != default(DateTime) && animal.DateSpotted < query.DateRange.Min)
+                        continue;
+
+                    if (query.DateRange is not null && query.DateRange.Max != default(DateTime) && animal.DateSpotted > query.DateRange.Max)
+                        continue;
+
 
                     result.Add(animal);
                 }
