@@ -1,4 +1,5 @@
 ﻿using Birdy.API.Models;
+using Birdy.API.Models.Request;
 
 namespace Birdy.API.Services.Interfaces
 {
@@ -6,6 +7,6 @@ namespace Birdy.API.Services.Interfaces
     {
         Task CreateBirdyWatch(BirdyWatch birdyWatch);
         Task<IEnumerable<BirdyWatch>> GetBirdyWatchesAsync();
-        Task<IEnumerable<BirdyWatch>> GetBirdyWatchesFilterAsync(string species, int score);
+        Task<IEnumerable<BirdyWatch>> GetBirdyWatchesFilterAsync(QueryRequest query);
     }
 }

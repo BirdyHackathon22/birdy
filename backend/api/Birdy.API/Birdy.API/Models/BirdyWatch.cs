@@ -27,7 +27,7 @@ namespace Birdy.API.Models
         public string ImageName { get; set; } = "no_image";
 
         [JsonProperty(PropertyName = "score")]
-        public int Score { get; set; }
+        public float Score { get; set; }
 
         [JsonProperty(PropertyName = "bounding_box")]
         public string BoundingBox { get; set; }
@@ -36,7 +36,7 @@ namespace Birdy.API.Models
         public string Device { get; set; }
 
         [JsonProperty(PropertyName = "speciesvote")]
-        public Location SpeciesVote { get; set; }
+        public SpeciesVote SpeciesVote { get; set; } = new SpeciesVote();
 
         public BirdyWatch(string species, Location location)
         {
@@ -94,10 +94,10 @@ namespace Birdy.API.Models
         [JsonProperty(PropertyName = "incorrect")]
         public int Incorrect { get; set; }
 
-        public SpeciesVote(int correct, int incorrect)
+        public SpeciesVote()
         {
-            Correct = correct;
-            Incorrect = incorrect;
+            Correct = 0;
+            Incorrect = 0;
         }
     }
 }

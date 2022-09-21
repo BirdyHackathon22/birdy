@@ -26,9 +26,9 @@ namespace Birdy.API.Controllers
         }
 
         [HttpGet("filter", Name = "GetBirdyWatchFilter")]
-        public async Task<IEnumerable<BirdyWatch>> GetByFilter(string species, int score)
+        public async Task<IEnumerable<BirdyWatch>> GetByFilter([FromQuery] QueryRequest query)
         {
-            return await cosmosDbService.GetBirdyWatchesFilterAsync(species, score);
+            return await cosmosDbService.GetBirdyWatchesFilterAsync(query);
         }
 
         [HttpPost(Name = "CreateBirdyWatch")]
