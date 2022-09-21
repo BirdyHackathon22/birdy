@@ -28,16 +28,7 @@ namespace Birdy.API.Controllers
             if (fileData != null)
                 return File(fileData, "image/jpeg");
 
-            byte[] fileContents = null;
-
-            using (var client = new HttpClient())
-            {
-                fileContents = await client.GetByteArrayAsync(BirdSpecies.Images[filename]);
-            }
-
-            string contentType = "image/jpeg";
-
-            return File(fileContents, contentType);
+            throw new FileNotFoundException();
         }
 
         [HttpPost(Name = "UploadMedia")]

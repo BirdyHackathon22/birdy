@@ -60,8 +60,5 @@ static async Task<CosmosDbService> InitializeCosmosClientInstanceAsync(IConfigur
     DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
     await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
 
-    //Setup some data
-    await cosmosDbService.SetupBirdyWatch();
-
     return cosmosDbService;
 }
