@@ -26,7 +26,11 @@ def main():
         except NotBirdError:
             print('No bird found in images')
             continue
-        sender.push_bird(bird)
+
+        try:
+            sender.push_bird(bird)
+        except RuntimeError:
+            print('Pushing to the API failed...')
 
 
 main()
